@@ -25,7 +25,7 @@ export default function Home({
       <div className={styles.container}>
         <Head>
           <title>AllerGenie</title>
-          <link rel="icon" href="/static/favicon.ico" />
+          {/* <link rel="icon" href="/static/favicon.ico" /> */}
         </Head>
 
         <main className={styles.main}>
