@@ -25,14 +25,14 @@ export default function Home({
       <div className={styles.container}>
         <Head>
           <title>AllerGenie</title>
-          <link rel="icon" href="/favicon.ico" />
+          <link rel="icon" href="/static/favicon.ico" />
         </Head>
 
         <main className={styles.main}>
           <h1 className={styles.title}>Welcome to Allergenie!</h1>
           <div>
             <img
-              src="/genie.svg"
+              src="/static/genie.svg"
               alt="Allergenie Logo"
               className={styles.logo}
             />
