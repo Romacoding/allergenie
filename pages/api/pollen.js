@@ -22,7 +22,7 @@ export default async (req, res) => {
       const forecastForToday = response.Location.periods[1] === undefined ? {Index: "0", Triggers: [{Name : "One"}, {Name : "Two"}, {Name : "Three"}]} : response.Location.periods[1];
 
       const weatherData = await axios
-      .get(`http://api.openweathermap.org/data/2.5/weather?zip=${zip},us&appid=${appIdKey}}`)
+      .get(`http://api.openweathermap.org/data/2.5/weather?zip=${zip},us&appid=${appIdKey}`)
       .then(function (responseData) {
         return responseData.data;
       }).catch(err => {
