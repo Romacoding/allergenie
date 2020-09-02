@@ -19,7 +19,7 @@ export default async (req, res) => {
         });
       
       const location = response.Location;
-      const forecastForToday = response.Location.periods[1] === undefined ? {Index: " ", Triggers: [{Name : " "}, {Name : " "}, {Name : " "}]} : response.Location.periods[1];
+      const forecastForToday = response.Location.periods[1] === undefined ? {Index: "0", Triggers: [{Name : "One"}, {Name : "Two"}, {Name : "Three"}]} : response.Location.periods[1];
 
       const weatherData = await axios
       .get(`http://api.openweathermap.org/data/2.5/weather?zip=${zip},us&appid=${appIdKey}}`)
@@ -43,9 +43,9 @@ export default async (req, res) => {
         zip: location.ZIP,
         displayLocation: location.DisplayLocation,
         pollenIndex: forecastForToday.Index,
-        triggerOne: forecastForToday.Triggers[0].Name,
-        triggerTwo: forecastForToday.Triggers[1].Name,
-        triggerThree: forecastForToday.Triggers[2].Name,
+        triggerOne: forecastForToday.Triggers[0] === undefined ? "Empty" : forecastForToday.Triggers[0].Name,
+        triggerTwo: forecastForToday.Triggers[1] === undefined ? "Empty" : forecastForToday.Triggers[1].Name,
+        triggerThree: forecastForToday.Triggers[2] === undefined ? "Empty" : forecastForToday.Triggers[2].Name,
         responseObject: response,
         weatherData: weatherData,
         pollutionData: pollutionData
