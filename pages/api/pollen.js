@@ -20,7 +20,7 @@ export default async (req, res) => {
       const forecastForToday = response.Location.periods[1] === undefined ? {Index: " ", Triggers: [{Name : " "}, {Name : " "}, {Name : " "}]} : response.Location.periods[1];
 
       const weatherData = await axios
-      .get(`http://api.openweathermap.org/data/2.5/weather?zip=${zip},us&appid=b5dd745e35603cb1222cf95c94da150f`)
+      .get(`http://api.openweathermap.org/data/2.5/weather?zip=${zip},us&appid=${process.env.APP_ID}}`)
       .then(function (responseData) {
         return responseData.data;
       }).catch(err => {
@@ -28,7 +28,7 @@ export default async (req, res) => {
       });
 
       const pollutionData = await axios
-      .get(`http://www.airnowapi.org/aq/observation/zipCode/current/?format=application/json&zipCode=${zip}&API_KEY=C29F9CDD-2831-4C7B-929C-B8682FBAADF3`)
+      .get(`http://www.airnowapi.org/aq/observation/zipCode/current/?format=application/json&zipCode=${zip}&API_KEY=${process.env.API_KEY}`)
       .then(function (responseData) {
         return responseData.data;
       }).catch(err => {
