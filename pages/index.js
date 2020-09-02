@@ -1,10 +1,12 @@
 import React from "react";
+import axios from "axios";
+import moment from "moment";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Pollen from "../components/pollen";
+import Weather from "../components/weather";
+import Pollution from "../components/pollution"
 import baseUrl from "../utils/baseUrl";
-import axios from "axios";
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 
 export default function Home({
   location,
@@ -15,32 +17,37 @@ export default function Home({
   triggerOne,
   triggerTwo,
   triggerThree,
+  responseObject,
+  weatherData,
+  pollutionData
 }) {
   const date = (function () {
-    return new Date().toDateString();
+    return moment().format("dddd, MMMM Do YYYY");
   })();
+  // console.log(responseObject);
+  // console.log(weatherData);
+  // console.log(pollutionData);
 
   return (
     <>
       <div className={styles.container}>
         <Head>
           <title>AllerGenie</title>
-          {/* <link rel="icon" href="/static/favicon.ico" /> */}
+          <link rel="icon" href="/favicon.ico" />
         </Head>
 
         <main className={styles.main}>
           <h1 className={styles.title}>Welcome to Allergenie!</h1>
           <div>
             <img
-              src="/static/genie.svg"
+              src="/genie.svg"
               alt="Allergenie Logo"
               className={styles.logo}
             />
           </div>
           <p className={styles.description}>Your daily pollen forecast</p>
 
-          <div className={styles.description}>
-            {/* <div className={styles.card}> */}
+          <div className={styles.grid}>
             <Pollen
               date={date}
               location={location}
@@ -52,64 +59,55 @@ export default function Home({
               triggerTwo={triggerTwo}
               triggerThree={triggerThree}
             />
-            {/* </div> */}
-          </div>
-          <div className={styles.grid} style={{ width: 200, height: 200 }}>
-            <CircularProgressbar
-              value={pollenIndex}
-              maxValue={12}
-              text={pollenIndex}
-              styles={buildStyles({
-                // Rotation of path and trail, in number of turns (0-1)
-                rotation: 0,
-
-                // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-                strokeLinecap: "round",
-
-                // Text size
-                textSize: "16px",
-
-                // How long animation takes to go from one percentage to another, in seconds
-                pathTransitionDuration: 0.5,
-
-                // Can specify path transition in more detail, or remove it entirely
-                // pathTransition: 'none',
-
-                // Colors
-                pathColor: `rgba(217, 30, 24, ${pollenIndex / 10})`,
-                textColor: `rgba(217, 30, 24, 1)`,
-                trailColor: "#18d91e",
-                backgroundColor: "#3e98c7",
-              })}
+            <Weather weatherData={weatherData}
+            />
+            <Pollution pollutionData={pollutionData}
             />
           </div>
+
         </main>
 
         <footer className={styles.footer}>
-          <div>
-            Pollen information is provided by{" "}
-            <a
-              href="https://www.pollen.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Pollen.com
-            </a>
-          </div>
+          Information is provided by
+          <a
+            href="https://www.pollen.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            &nbsp;Pollen.com
+          </a>,
+          <a
+            href="https://openweathermap.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            &nbsp;OpenWeather
+          </a>
+          &nbsp;and 
+          <a
+            href="https://www.airnow.gov/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            &nbsp;AirNow
+          </a>.
         </footer>
       </div>
     </>
   );
 }
 
-Home.getInitialProps = async () => {
+Home.getInitialProps = async (ctx) => {
   const url = `${baseUrl}/api/pollen`;
-  // locate the IP of the user
+  // locate IP of a user
   const zip = await axios
     .get("http://ip-api.com/json/?fields=zip")
     .then(function (responseData) {
       return responseData.data.zip;
+    }).catch(err => {
+      console.log(err);
     });
+
   const payload = { params: { zip } };
   // fetch data on server
   const response = await axios.get(url, payload);

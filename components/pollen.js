@@ -1,5 +1,6 @@
 import React from "react";
-// import { usePosition } from "../utils/usePosition";
+import styles from "../styles/Home.module.css";
+import { Progress } from "antd";
 
 export default function Pollen({
   date,
@@ -12,40 +13,54 @@ export default function Pollen({
   triggerTwo,
   triggerThree,
 }) {
-    
-  // const { latitude, longitude, timestamp, accuracy, error } = usePosition(
-  //   false
-  // );
+  let pollenLevel;
+  const pollenIndexNum = Number(pollenIndex);
+  if (pollenIndexNum > 9.6) {
+    pollenLevel = "High";
+  } else if (pollenIndexNum > 7.2) {
+    pollenLevel = "Medium High";
+  } else if (pollenIndexNum > 4.8) {
+    pollenLevel = "Medium";
+  } else if (pollenIndexNum > 2.4) {
+    pollenLevel = "Low Medium";
+  } else {
+    pollenLevel = "Low";
+  }
+  
+  const pollenIcon = (
+    <img
+      src="/pollen_flower.svg"
+      alt="Flower Logo"
+      className={styles.logosmall}
+    />
+  );
 
   return (
     <div>
-      <p>Today is: {date}.</p>
-      {/* <h2>Geolocated data from your browser</h2>
-      latitude: {latitude}
-      <br />
-      longitude: {longitude}
-      <br />
-      timestamp: {timestamp}
-      <br />
-      accuracy: {accuracy && `${accuracy}m`}
-      <hr></hr>
-      <h2>Data retrived from your internet connection</h2>
-      Your IP is: {query} and you are from {country}, {city}, {region}
-      <br />
-      Internet Service Provider: {isp && isp.slice(39, 47)}
-      <br />
-      Latitude: {lat}
-      <br />
-      Longitude: {lon}
-      <br /> */}
-      {/* <p>It looks like your zip is {zip}</p> */}
-      <p>Location: {displayLocation}.</p>
-      {/* <p>Pollen index for today is {pollenIndex}.</p> */}
-      <p>
-        Main allergens: {triggerOne}, {triggerTwo}, {triggerThree}.
-      </p>
+      <div className={styles.card}>
+        <h3>Allergy forecast for {displayLocation}</h3>
+        <p>Today is {date}</p>
+        <hr />
+        <div className={styles.progress}>
+          <h3>Allergy Index</h3>
+          <Progress
+            type="circle"
+            width={170}
+            strokeColor={{
+              0: "#87d068 ",
+              100: "#d06887",
+            }}
+            percent={Math.floor((pollenIndex * 100) / 12)}
+            format={(percent) => `${pollenIndex}`}
+          />
+          <p>{pollenLevel}</p>
+        </div>
+        <hr />
+        <h3>Main allergens</h3>
+        <p>
+          {pollenIcon} {triggerOne}, {triggerTwo}, {triggerThree}
+        </p>
+      </div>
     </div>
-
-    //   <PollenDisplay location={location} state={state} zip={zip} displayLocation={displayLocation} pollenIndex={pollenIndex} triggerOne={triggerOne} triggerTwo={triggerTwo} triggerThree={triggerThree} />
   );
 }
