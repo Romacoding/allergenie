@@ -7,6 +7,8 @@ import Pollen from "../components/pollen";
 import Weather from "../components/weather";
 import Pollution from "../components/pollution"
 import baseUrl from "../utils/baseUrl";
+// import Search from "antd/lib/input/Search";
+import Search from "../components/search";
 
 export default function Home({
   location,
@@ -46,7 +48,7 @@ export default function Home({
             />
           </div>
           <p className={styles.description}>Your daily pollen forecast</p>
-
+          <Search />
           <div className={styles.grid}>
             <Pollen
               date={date}
