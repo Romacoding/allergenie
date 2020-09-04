@@ -16,7 +16,7 @@ export default function Search() {
     //         setZip({ searchZip: value});
     //     }
     // };
-console.log(searchZip);
+// console.log(searchZip);
 return (
 //     <input
 //     placeholder='Enter your zip code'
