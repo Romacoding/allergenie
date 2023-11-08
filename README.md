@@ -1,6 +1,6 @@
 # AllerGenie
 
-Web application build with JavaScript.
+Web application build with JavaScript
 
 ## Technology used:
 
